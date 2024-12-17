@@ -8,7 +8,7 @@ function openCreatePostModal() {
   if (deferredPrompt) {
     deferredPrompt.prompt();
 
-    deferredPrompt.userChoice.then(function(choiceResult) {
+    deferredPrompt.userChoice.then(function (choiceResult) {
       console.log(choiceResult.outcome);
 
       if (choiceResult.outcome === 'dismissed') {
@@ -20,6 +20,16 @@ function openCreatePostModal() {
 
     deferredPrompt = null;
   }
+
+  // To unregister a service worker, also clears the cache
+  // if ('serviceWorker' in navigator) {
+  //   navigator.serviceWorker.getRegistrations()
+  //     .then(function (registrations) {
+  //       for (var i = 0; i < registrations.length(); i++) {
+  //         registrations[i].unregister();
+  //       }
+  //     })
+  // }
 }
 
 function closeCreatePostModal() {
@@ -43,7 +53,7 @@ closeCreatePostModalButton.addEventListener('click', closeCreatePostModal);
 // }
 
 function clearCards() {
-  while(sharedMomentsArea.hasChildNodes()) {
+  while (sharedMomentsArea.hasChildNodes()) {
     sharedMomentsArea.removeChild(sharedMomentsArea.lastChild);
   }
 }
@@ -79,10 +89,10 @@ var url = 'https://httpbin.org/get';
 var networkDataReceived = false;
 
 fetch(url)
-  .then(function(res) {
+  .then(function (res) {
     return res.json();
   })
-  .then(function(data) {
+  .then(function (data) {
     networkDataReceived = true;
     console.log('From web', data);
     clearCards();
@@ -91,12 +101,12 @@ fetch(url)
 
 if ('caches' in window) {
   caches.match(url)
-    .then(function(response) {
+    .then(function (response) {
       if (response) {
         return response.json();
       }
     })
-    .then(function(data) {
+    .then(function (data) {
       console.log('From cache', data);
       if (!networkDataReceived) {
         clearCards();
